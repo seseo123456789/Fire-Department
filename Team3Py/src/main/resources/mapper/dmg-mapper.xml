@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="dmgMapper">
+    <resultMap id="five" type="com.green.pythonTeam3.dmg.vo.FiveVO">
+        <result column="OCRN_MNB" property="ocrnMnb"/>
+        <result column="OCRN_YMD" property="ocrnYmd"/>
+        <result column="INJRDPR_PERCNT" property="injrdprPercnt"/>
+        <result column="VCTM_PERCNT" property="vctmPercnt"/>
+        <result column="LIFE_DMG_PERCNT" property="lifeDmgPercnt"/>
+    </resultMap>
+
+    <resultMap id="six" type="com.green.pythonTeam3.dmg.vo.SixVO">
+        <result column="OCRN_MNB" property="ocrnMnb"/>
+        <result column="OCRN_YMD" property="ocrnYmd"/>
+        <result column="PRPT_DMG_SBTT_AMT" property="prptDmgSbttAmt"/>
+        <result column="PERP_DMG_AMT" property="perpDmgAmt"/>
+        <result column="REST_DMG_AMT" property="restDmgAmt"/>
+    </resultMap>
+
+    <select id="totalIjd" resultType="int">
+        SELECT SUM(LIFE_DMG_PERCNT) AS LIFE_DMG_PERCNT
+        FROM python_5
+        GROUP BY SUBSTRING(OCRN_YMD,1,4)
+        ORDER BY SUBSTRING(OCRN_YMD,1,4) ASC
+    </select>
+    <select id="totalMoney" resultType="int">
+        SELECT SUM(PRPT_DMG_SBTT_AMT) AS PRPT_DMG_SBTT_AMT
+        FROM python_6
+        GROUP BY SUBSTRING(OCRN_YMD,1,4)
+        ORDER BY SUBSTRING(OCRN_YMD,1,4) ASC
+    </select>
+
+    <select id="ijdPp" resultMap="five">
+        SELECT SUM(INJRDPR_PERCNT) AS INJRDPR_PERCNT,
+                SUM(VCTM_PERCNT) AS VCTM_PERCNT,
+                SUBSTRING(OCRN_YMD,1,4) AS OCRN_YMD
+        FROM python_5
+        GROUP BY SUBSTRING(OCRN_YMD,1,4)
+        ORDER BY SUBSTRING(OCRN_YMD,1,4) ASC;
+    </select>
+    <select id="moneyDmg" resultMap="six">
+        SELECT SUM(PERP_DMG_AMT) AS PERP_DMG_AMT,
+                SUM(REST_DMG_AMT) AS REST_DMG_AMT,
+                SUBSTRING(OCRN_YMD,1,4) AS OCRN_YMD
+        FROM python_6
+        GROUP BY SUBSTRING(OCRN_YMD,1,4)
+        ORDER BY SUBSTRING(OCRN_YMD,1,4) ASC;
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

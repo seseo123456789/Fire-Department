@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 발화 요인 & 최초 착화물 -->
+<mapper namespace="factorMapper">
+    <!-- 8. 발화요인 -->
+    <resultMap id="fireFactor" type="com.green.pythonTeam3.ranking.vo.FireFactorVO">
+        <result column="PROPERTY_DAMAGE"        property="propertyDamage"/>
+        <result column="FIRE_FACTOR_BIG"        property="fireFactorBig"/>
+        <result column="OCCURRENCES"            property="occurrences"/>
+        <result column="INJURED_PEOPLE"         property="injuredPeople"/>
+        <result column="DATE_OF_INCIDENT"       property="dateOfIncident"/>
+        <result column="VICTIM_PERCENT"         property="victimPercent"/>
+        <result column="FIRE_FACTOR_SMALL"      property="fireFactorSmall"/>
+        <result column="COUNT"                  property="count"/>
+        <result column="AVG_OCCURRENCES"        property="avgOccurrences" />
+        <collection property="firstChelateVO"    resultMap="firstChelate" />
+    </resultMap>
+
+    <!-- 11. 최초 착화물별 -->
+    <resultMap id="firstChelate" type="com.green.pythonTeam3.total.vo.FirstChelateVO">
+        <result column="FIRSTBURN_BIG_TYPE"     property="chelateBigType"/>
+        <result column="FIRSTBURN_SMALL_TYPE"   property="chelateSmallType"/>
+        <result column="HAPPEN_DATE"            property="dateOfIncident"/>
+        <result column="HAPPEN_CNT"             property="occurrences"/>
+        <result column="HULT_PEOPLE"            property="injuredPeople"/>
+        <result column="MONEY_DAMAGE"           property="propertyDamage"/>
+        <result column="COUNT"                  property="count"/>
+    </resultMap>
+
+    <!-- 메인화면 top3 조회 -->
+    <!-- 1. 발화요인 - 대분류명 -->
+        <select id="mainFactorTop1" resultMap="fireFactor">
+            SELECT FIRE_FACTOR_BIG
+                , COUNT(FIRE_FACTOR_BIG) AS COUNT
+            FROM python_8
+            WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = #{selectYear}
+            GROUP BY FIRE_FACTOR_BIG
+            ORDER BY COUNT(FIRE_FACTOR_BIG) DESC
+            LIMIT 3;
+        </select>
+
+    <!-- 2. 최초착화물별 - 대분류명 -->
+    <select id="mainFactorTop2" resultMap="firstChelate">
+        SELECT FIRSTBURN_BIG_TYPE
+            , COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = #{selectYear}
+        GROUP BY FIRSTBURN_BIG_TYPE
+        ORDER BY COUNT(FIRSTBURN_BIG_TYPE) DESC
+        LIMIT 3;
+    </select>
+
+    <!-- 메인화면 top3 증감값 조회 -->
+        <!-- 1. 발화요인 - 대분류명  -->
+    <select id="mainFactorUD1" resultType="int">
+        SELECT
+            subquery.`selectCount` - subquery.`lastYearCount` AS 'upDown'
+        FROM (
+        SELECT
+            FIRE_FACTOR_BIG,
+            SUM(CASE WHEN DATE_FORMAT(DATE_OF_INCIDENT, '%Y') = #{selectYear} THEN 1 ELSE 0 END) AS 'selectCount',
+            SUM(CASE WHEN DATE_FORMAT(DATE_OF_INCIDENT, '%Y') = (#{selectYear} - 1) THEN 1 ELSE 0 END) AS 'lastYearCount'
+            FROM python_8
+            GROUP BY FIRE_FACTOR_BIG
+            ORDER BY `selectCount` DESC
+            LIMIT 3
+        ) AS subquery
+    </select>
+
+        <!-- 2. 최초착화물별 - 대분류명-->
+    <select id="mainFactorUD2" resultType="int">
+        SELECT
+            subquery.`selectCount` - subquery.`lastYearCount` AS 'upDown'
+        FROM (
+            SELECT
+        FIRSTBURN_BIG_TYPE,
+            SUM(CASE WHEN DATE_FORMAT(HAPPEN_DATE, '%Y') = #{selectYear} THEN 1 ELSE 0 END) AS 'selectCount',
+            SUM(CASE WHEN DATE_FORMAT(HAPPEN_DATE, '%Y') = (#{selectYear} - 1) THEN 1 ELSE 0 END) AS 'lastYearCount'
+            FROM python_11
+            GROUP BY FIRSTBURN_BIG_TYPE
+            ORDER BY `selectCount` DESC
+            LIMIT 3
+        ) AS subquery
+    </select>
+
+    <!-- 발화요인 평균 -->
+    <select id="avgFireFactor" resultMap="fireFactor">
+        SELECT FIRE_FACTOR_BIG
+            , SUM(OCCURRENCES) / 1095 AS AVG_OCCURRENCES
+        FROM python_8
+        WHERE YEAR(DATE_OF_INCIDENT) IN (2021, 2022, 2023) AND MONTH(DATE_OF_INCIDENT) = 1
+        GROUP BY FIRE_FACTOR_BIG
+        ORDER BY AVG_OCCURRENCES DESC
+        LIMIT 1
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

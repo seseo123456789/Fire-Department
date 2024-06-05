@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="sidoMapper">
+
+    <resultMap id="python3" type="com.green.pythonTeam3.sido.vo.Python3VO">
+        <id column="VCTM_CODE"          property="victimCode"/>
+        <result column="VCTM_MONTH"     property="victimMonth"/>
+        <result column="VCTM_SIDO"        property="victimSido"/>
+        <result column="VCTM_OCRN"       property="victimOcrn"/>
+        <result column="LIFE_DMG_PERCNT" property="lifeDmgPercnt"/>
+        <result column="TOTAL_OCRN"         property="totalOcrn"/>
+        <result column="TOTAL_PRPT"         property="totalPrpt"/>
+    </resultMap>
+
+
+    <resultMap id="python4" type="com.green.pythonTeam3.sido.vo.Python4VO">
+        <id column="PROPERTY_CODE"      property="propertyCode"/>
+        <result column="OCRN_MONTH"         property="ocrnMonth"/>
+        <result column="SIDO_NM"            property="sidoNm"/>
+        <result column="OCRN_MNB"           property="ocrnMnb"/>
+        <result column="PRPT_DMG_SBTT_AMT"  property="prptDmgSbttAmt"/>
+        <result column="LIFE_DMG_PERCNT"  property="lifeDmgPercnt"/>
+        <result column="TOTAL_OCRN"         property="totalOcrn"/>
+        <result column="TOTAL_PRPT"         property="totalPrpt"/>
+        <result column="TOTAL_LIFE"         property="totalLife"/>
+    </resultMap>
+
+
+    <!-- ###################################### (재산& 인명)년도별 시도별 정보 조회 ####################################### -->
+    <!--  2021~2023년 총 발생건수 & 피해액  -->
+    <select id="totalProperty" resultMap="python4">
+        SELECT
+        SUM(OCRN_MNB) AS TOTAL_OCRN,
+        SUM(PRPT_DMG_SBTT_AMT) AS TOTAL_PRPT
+        FROM python_4
+    </select>
+
+    <!-- 년도별 2021 -->
+    <select id="property2021" resultMap="python4">
+        SELECT
+        p4.SIDO_NM
+        ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH LIKE '%2021%' GROUP BY p4.SIDO_NM)AS OCRN_MNB
+        ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH LIKE '%2021%' GROUP BY p4.SIDO_NM)AS PRPT_DMG_SBTT_AMT
+        ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p4.SIDO_NM and VCTM_MONTH LIKE '%2021%' GROUP BY p3.VCTM_SIDO)AS LIFE_DMG_PERCNT
+        , (SELECT SUM(OCRN_MNB) FROM python_4 WHERE OCRN_MONTH LIKE '%2021%')AS TOTAL_OCRN
+        , (SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE OCRN_MONTH LIKE '%2021%') AS TOTAL_PRPT
+        , (SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_MONTH LIKE '%2021%') AS TOTAL_LIFE
+        FROM python_4 p4
+        INNER JOIN python_3 p3
+        ON p4.SIDO_NM=p3.VCTM_SIDO
+        WHERE OCRN_MONTH LIKE '%2021%'
+        GROUP BY SIDO_NM
+    </select>
+
+    <!-- 년도별 2022 -->
+    <select id="property2022" resultMap="python4">
+        SELECT
+        p4.SIDO_NM
+        ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH LIKE '%2022%' GROUP BY p4.SIDO_NM)AS OCRN_MNB
+        ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH LIKE '%2022%' GROUP BY p4.SIDO_NM)AS PRPT_DMG_SBTT_AMT
+        ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p4.SIDO_NM and VCTM_MONTH LIKE '%2022%' GROUP BY p3.VCTM_SIDO)AS LIFE_DMG_PERCNT
+        , (SELECT SUM(OCRN_MNB) FROM python_4 WHERE OCRN_MONTH LIKE  '%2022%')AS TOTAL_OCRN
+        , (SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE OCRN_MONTH LIKE '%2022%') AS TOTAL_PRPT
+        , (SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_MONTH LIKE '%2022%') AS TOTAL_LIFE
+        FROM python_4 p4
+        INNER JOIN python_3 p3
+        ON p4.SIDO_NM=p3.VCTM_SIDO
+        WHERE OCRN_MONTH LIKE '%2022%'
+        GROUP BY SIDO_NM
+    </select>
+    <!-- 년도별 2023 -->
+    <select id="property2023" resultMap="python4">
+        SELECT
+        p4.SIDO_NM
+        ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH LIKE '%2023%' GROUP BY p4.SIDO_NM)AS OCRN_MNB
+        ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH LIKE '%2023%' GROUP BY p4.SIDO_NM)AS PRPT_DMG_SBTT_AMT
+        ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p4.SIDO_NM and VCTM_MONTH LIKE '%2023%' GROUP BY p3.VCTM_SIDO)AS LIFE_DMG_PERCNT
+        , (SELECT SUM(OCRN_MNB) FROM python_4 WHERE OCRN_MONTH LIKE  '%2023%')AS TOTAL_OCRN
+        , (SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE OCRN_MONTH LIKE '%2023%') AS TOTAL_PRPT
+        , (SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_MONTH LIKE '%2023%') AS TOTAL_LIFE
+        FROM python_4 p4
+        INNER JOIN python_3 p3
+        ON p4.SIDO_NM=p3.VCTM_SIDO
+        WHERE OCRN_MONTH LIKE '%2023%'
+        GROUP BY SIDO_NM
+    </select>
+
+
+
+
+<!-- ###################################### (재산& 인명) 시도별 월별 정보 조회 ####################################### -->
+
+    <!-- 월별 2021년   -->
+    <select id="monthPro2021" resultMap="python4">
+        SELECT
+            p4.SIDO_NM
+            ,p4.OCRN_MONTH
+            ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH=p4.OCRN_MONTH)AS OCRN_MNB
+            ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH=p4.OCRN_MONTH)AS PRPT_DMG_SBTT_AMT
+            ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p4.SIDO_NM and VCTM_MONTH=p4.OCRN_MONTH)AS LIFE_DMG_PERCNT
+            ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM AND OCRN_MONTH LIKE '%2021%')AS TOTAL_OCRN
+            ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM AND OCRN_MONTH LIKE  '%2021%') AS TOTAL_PRPT
+            ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p3.VCTM_SIDO AND VCTM_MONTH LIKE '%2021%') AS TOTAL_LIFE
+        FROM python_4 p4
+        INNER JOIN python_3 p3
+        ON p4.SIDO_NM=p3.VCTM_SIDO
+        WHERE p4.SIDO_NM=#{sidoNm} AND p4.OCRN_MONTH LIKE '%2021%'
+        GROUP BY p4.OCRN_MONTH
+    </select>
+
+    <!-- 월별 2022년   -->
+    <select id="monthPro2022" resultMap="python4">
+        SELECT
+            p4.SIDO_NM
+            ,p4.OCRN_MONTH
+            ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH=p4.OCRN_MONTH)AS OCRN_MNB
+            ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH=p4.OCRN_MONTH)AS PRPT_DMG_SBTT_AMT
+            ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p4.SIDO_NM and VCTM_MONTH=p4.OCRN_MONTH)AS LIFE_DMG_PERCNT
+            ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM AND OCRN_MONTH LIKE '%2022%')AS TOTAL_OCRN
+            ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM AND OCRN_MONTH LIKE  '%2022%') AS TOTAL_PRPT
+            ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p3.VCTM_SIDO AND VCTM_MONTH LIKE '%2022%') AS TOTAL_LIFE
+        FROM python_4 p4
+        INNER JOIN python_3 p3
+        ON p4.SIDO_NM=p3.VCTM_SIDO
+        WHERE p4.SIDO_NM=#{sidoNm} AND p4.OCRN_MONTH LIKE '%2022%'
+        GROUP BY p4.OCRN_MONTH
+    </select>
+
+    <!-- 월별 2023년   -->
+    <select id="monthPro2023" resultMap="python4">
+        SELECT
+            p4.SIDO_NM
+            ,p4.OCRN_MONTH
+            ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH=p4.OCRN_MONTH)AS OCRN_MNB
+            ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM and OCRN_MONTH=p4.OCRN_MONTH)AS PRPT_DMG_SBTT_AMT
+            ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p4.SIDO_NM and VCTM_MONTH=p4.OCRN_MONTH)AS LIFE_DMG_PERCNT
+            ,(SELECT SUM(OCRN_MNB) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM AND OCRN_MONTH LIKE '%2023%')AS TOTAL_OCRN
+            ,(SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE SIDO_NM=p4.SIDO_NM AND OCRN_MONTH LIKE  '%2023%') AS TOTAL_PRPT
+            ,(SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE VCTM_SIDO=p3.VCTM_SIDO AND VCTM_MONTH LIKE '%2023%') AS TOTAL_LIFE
+        FROM python_4 p4
+        INNER JOIN python_3 p3
+        ON p4.SIDO_NM=p3.VCTM_SIDO
+        WHERE p4.SIDO_NM=#{sidoNm} AND p4.OCRN_MONTH LIKE '%2023%'
+        GROUP BY p4.OCRN_MONTH
+    </select>
+
+    <!--  시도명 조회  -->
+    <select id="selectSido" resultMap="python4">
+        <![CDATA[
+            SELECT
+            PROPERTY_CODE,
+            SIDO_NM
+            FROM python_4
+            WHERE PROPERTY_CODE >0 AND PROPERTY_CODE <18
+        ]]>
+    </select>
+
+
+
+    <!-- ###################################### (인명)년도별 시도별 정보 조회 ####################################### -->
+
+    <!--  2021~2023년 총 발생건수 & 피해인명수  -->
+    <select id="totalVictim" resultMap="python3">
+        SELECT
+        SUM(VCTM_OCRN) AS TOTAL_OCRN,
+        SUM(LIFE_DMG_PERCNT) AS TOTAL_PRPT
+        FROM python_3
+    </select>
+
+    <!-- ###################################### 총 년도별 정보 조회 ####################################### -->
+
+
+
+    <!--  2021~2023년 총 재산, 인명, 발생 -->
+    <select id="selectYears" resultMap="python4">
+        SELECT
+        p4.OCRN_MONTH
+        , (SELECT SUM(OCRN_MNB) FROM python_4 WHERE substring(OCRN_MONTH,1,4) = substring(p4.OCRN_MONTH,1,4))AS TOTAL_OCRN
+        , (SELECT SUM(PRPT_DMG_SBTT_AMT) FROM python_4 WHERE substring(OCRN_MONTH,1,4) = substring(p4.OCRN_MONTH,1,4)) AS TOTAL_PRPT
+        , (SELECT SUM(LIFE_DMG_PERCNT) FROM python_3 WHERE SUBSTRING(VCTM_MONTH,1,4) = substring(p4.OCRN_MONTH,1,4)) AS TOTAL_LIFE
+        FROM python_4 p4
+        INNER JOIN python_3 p3
+        ON p4.SIDO_NM=p3.VCTM_SIDO
+        WHERE substring(p4.OCRN_MONTH,1,4) = #{selectYear}
+        GROUP BY substring(p4.OCRN_MONTH,1,4) = #{selectYear}
+    </select>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

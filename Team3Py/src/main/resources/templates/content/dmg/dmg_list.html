@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragment/result_layout}">
+
+<th:block layout:fragment="content_css">
+  <!-- html 파일이 열릴 때 같이 실행 되는 css -->
+  <link rel="stylesheet" href="/">
+</th:block>
+
+<th:block layout:fragment="contentFragment">
+  <!-- html 코드 작성-->
+  <style>
+    .small-layer {
+      height: 336.8px;
+      width: 400px;
+    }
+
+    .more-small-layer {
+      height: 75px;
+      width: 400px;
+      padding-left: 270px;
+      align-items: center;
+    }
+
+    .layer {
+      border: 1px solid #dddddd;
+      border-radius: 10px;
+      background-color: white;
+      margin: 35px 210px;
+      overflow: hidden;
+      padding: 0 50px;
+      position: relative;
+      /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); */
+    }
+
+    #first_total {
+      position: absolute;
+      top: -0px;
+      transition: 2s;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    #second_total {
+      position: absolute;
+      top: -0px;
+      transition: 2s;
+    }
+
+    #first_chart {
+      position: absolute;
+      top: -0px;
+      transition: 2s;
+    }
+
+    #first_chart>div {
+      padding: 0px;
+    }
+
+    #second_chart {
+      position: absolute;
+      top: -0px;
+      transition: 2s;
+    }
+
+    #second_chart>div {
+      padding: 0px;
+    }
+    .totals{
+      height : 75px;
+      padding: 25px;
+    }
+    .totals2{
+      height : 75px;
+      padding: 25px 0px;
+    }
+  </style>
+
+  <div style="margin-left: 150px; margin-right: 150px; margin-top: 60px; height: 2000px;">
+    <div class="row">
+      <div class="col">
+        <!-- 헤더 -->
+        <div class="row mb-3">
+          <div class="col">
+            <div class="d-flex" style="padding-top: 3px; padding-bottom: 10px;">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor"
+                  class="bi bi-clipboard text-secondary" viewBox="0 0 16 16">
+                  <path
+                    d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                  <path
+                    d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                </svg>
+              </div>
+              <div class="text-secondary" style="font-size: 16px; margin-left: 10px;">홈 > 피해통계</div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-4 border-bottom border-black border-2" style="padding-bottom: 5px;">
+          <div class="col">
+            <h3 style="font-weight: bold;">피해통계</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-6 text-center">
+        <span class="badge text-bg-secondary rounded-0 me-2" style="font-size: 23px;">인명피해 통계</span>
+      </div>
+      <div class="col-6 text-center">
+        <span class="badge text-bg-secondary rounded-0 me-2" style="font-size: 23px;">재산피해 통계</span>
+      </div>
+    </div>
+
+    <!-- 그래프 -->
+    <div class="row">
+      <div class="col">
+        <div class="row">
+
+          <div class="col layer small-layer">
+            <div class="row" id="first_chart">
+              <div class="col">
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2021 인명피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartPeoDMG2021" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2022 인명피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartPeoDMG2022" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2023 인명피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartPeoDMG2023" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2021 인명피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartPeoDMG2021R" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col layer small-layer">
+            <div class="row" id="second_chart">
+              <div class="col">
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2021 재산피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartMnDMG2021" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2022 재산피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartMnDMG2022" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2023 재산피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartMnDMG2023" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <h4 style="font-weight: bold; text-align: center;">2021 재산피해</h4>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <canvas id="doughnut-chartMnDMG2021R" style="width: 300; height: 300;"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col layer more-small-layer">
+            <div class="row" style="height: 100%; display: flex; justify-content: center;">
+              <div class="col" id="first_total" style="width: 50%; margin: 0 auto;">
+                <div class="row">
+                  <div class="col totals">총 부상자 : [[${totalIjd[0]}]]명</div>
+                </div>
+                <div class="row">
+                  <div class="col totals">총 부상자 : [[${totalIjd[1]}]]명</div>
+                </div>
+                <div class="row">
+                  <div class="col totals">총 부상자 : [[${totalIjd[2]}]]명</div>
+                </div>
+                <div class="row">
+                  <div class="col totals">총 부상자 : [[${totalIjd[0]}]]명</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col layer more-small-layer">
+            <div class="row" style="height: 100%; display: flex; justify-content: center;">
+              <div class="col" id="second_total" style="width: 70%; margin: 0 auto;">
+                <div class="row">
+                  <div class="col totals2">총 피해금액 : [[${totalMoney[0]}]],000원</div>
+                </div>
+                <div class="row">
+                  <div class="col totals2">총 피해금액 : [[${totalMoney[1]}]],000원</div>
+                </div>
+                <div class="row">
+                  <div class="col totals2">총 피해금액 : [[${totalMoney[2]}]],000원</div>
+                </div>
+                <div class="row">
+                  <div class="col totals2">총 피해금액 : [[${totalMoney[0]}]],000원</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 테이블 -->
+
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <table class="table table table-hover text-center align-middle">
+              <colgroup>
+                <col width="25%">
+                <col width="25%">
+                <col width="25%">
+                <col width="25%">
+              </colgroup>
+              <thead class="table-group-divider border-success">
+                <tr>
+                  <td style="background-color: #bbbbbb;">연도</td>
+                  <td class="border-end border border-success" style="background-color: #bbbbbb;">2021</td>
+                  <td class="border-end border border-success" style="background-color: #bbbbbb;">2022</td>
+                  <td style="background-color: #bbbbbb;">2023</td>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider border-success">
+                <tr>
+                  <td style="background-color: #dddddd;">사고자 수</td>
+                  <td class="border-end border border-success">[[${yearInjrdprPercnt[0]}]]명</td>
+                  <td class="border-end border border-success">[[${yearInjrdprPercnt[1]}]]명</td>
+                  <td>[[${yearInjrdprPercnt[2]}]]명</td>
+                </tr>
+                <tr>
+                  <td style="background-color: #dddddd;">부상자 수</td>
+                  <td class="border-end border border-success">[[${yearVctmPercnt[0]}]]명</td>
+                  <td class="border-end border border-success">[[${yearVctmPercnt[1]}]]명</td>
+                  <td>[[${yearVctmPercnt[2]}]]명</td>
+                </tr>
+                <tr>
+                  <td style="background-color: #bbbbbb;">총 인명 피해자 수</td>
+                  <td class="border-end border border-success" style="background-color: #dddddd;">[[${totalIjd[0]}]]명</td>
+                  <td class="border-end border border-success" style="background-color: #dddddd;">[[${totalIjd[1]}]]명</td>
+                  <td style="background-color: #dddddd;">[[${totalIjd[2]}]]명</td>
+                </tr>
+                <tr>
+                  <td style="background-color: #dddddd;">동산피해</td>
+                  <td class="border-end border border-success">[[${yearPerpDmgAmt[0]}]],000원</td>
+                  <td class="border-end border border-success">[[${yearPerpDmgAmt[1]}]],000원</td>
+                  <td>[[${yearPerpDmgAmt[2]}]],000원</td>
+                </tr>
+                <tr>
+                  <td style="background-color: #dddddd;">부동산피해</td>
+                  <td class="border-end border border-success">[[${yearRestDmgAmt[0]}]],000원</td>
+                  <td class="border-end border border-success">[[${yearRestDmgAmt[1]}]],000원</td>
+                  <td>[[${yearRestDmgAmt[2]}]],000원</td>
+                </tr>
+                <tr>
+                  <td style="background-color: #bbbbbb;">총 재산피해 소계 금액</td>
+                  <td class="border-end border border-success" style="background-color: #dddddd;">[[${totalMoney[0]}]],000원</td>
+                  <td class="border-end border border-success" style="background-color: #dddddd;">[[${totalMoney[1]}]],000원</td>
+                  <td style="background-color: #dddddd;">[[${totalMoney[2]}]],000원</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+
+
+  </div>
+
+
+</th:block>
+
+<th:block layout:fragment="content_jsp">
+  <!-- html 파일이 열릴 때 같이 실행 되는 js-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/js/dmg/dmg_list.js"></script>
+</th:block>
+
+</html>

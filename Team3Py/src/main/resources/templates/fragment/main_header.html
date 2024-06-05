@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<th:block th:fragment="headerFragment">
+    <div class="row mt-3">
+        <div class="col-1" style="margin-top: 0.5%; padding-left: 2.5%;" onclick="gomain()">
+            <img src="/img/symbol.png" style="height: 18%;">
+        </div>
+        <div class="col-2" style="padding-top: .5%;" onclick="gomain()">
+            <span style="font-weight: bold; font-size: 1.8rem;">화재모니터링 시스템</span>
+        </div>
+        <div class="col-7" style="margin-top: .5%; padding-right: 20%; font-weight: bold;">
+            <ul class="nav justify-content-start">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/" style="--bs-nav-link-color: rgb(138, 138, 138); --bs-nav-link-hover-color: orange;">
+                        <span style="font-size: 18px;">Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sido/sidoFirst" style="--bs-nav-link-color: rgb(138, 138, 138); --bs-nav-link-hover-color: orange;">
+                        <span style="font-size: 18px;">시도별 화재피해</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/statistics/statisticsFirst" style="--bs-nav-link-color: rgb(138, 138, 138); --bs-nav-link-hover-color: orange;">
+                        <span style="font-size: 18px;">화재통계</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/dmg/dmgList" style="--bs-nav-link-color: rgb(138, 138, 138); --bs-nav-link-hover-color: orange;">
+                        <span style="font-size: 18px;">피해통계</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-1" th:if="${year}" style="margin-top: .65%;">
+            <select class="form-select" id="yearChanger" name="selectYear" onchange="year_changer()">
+                <option value="2021" th:selected="${year} == '2021'">2021</option>
+                <option value="2022" th:selected="${year} == '2022'">2022</option>
+                <option value="2023" th:selected="${year} == '2023'">2023</option>
+            </select>
+        </div>
+    </div>
+
+
+</th:block>
+
+</html>

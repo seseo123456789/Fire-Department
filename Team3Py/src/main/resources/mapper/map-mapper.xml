@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="mapMapper">
+
+	<resultMap id="sidoMap" type="com.green.pythonTeam3.mapping.vo.LocalPlaceCntVO">
+        <result column="PLACE_NUM"      property="placeNum" />
+        <result column="FALS_DCLR_MNB"  property="flasDclrMnb" />
+        <result column="FIRE_PROG_MNB"  property="fireProgMnb" />
+        <result column="FLSRP_PRCS_MNB" property="fireRcptMnb" />
+        <result column="FIRE_RCPT_MNB"  property="flsrpPrcsMnb" />
+        <result column="OCRN_YMD"       property="dcrnYmd" />
+        <result column="SIDO_NM"        property="sidoNm" />
+        <result column="SLF_EXTSH_MNB"  property="slfExtshMnb" />
+        <result column="STN_END_MNB"    property="stnEndMnb" />
+    </resultMap>
+
+    <resultMap id="localMap" type="com.green.pythonTeam3.mapping.vo.StateFireCntVO">
+        <result column="PROP_NUM"               property="propNum" />
+        <result column="PROPERTY_DAMAGE"        property="propertyDamage" />
+        <result column="OCCURRENCES"            property="occurrences" />
+        <result column="INJURED_PEOPLE"         property="injuredPeople" />
+        <result column="DATE_OF_INCIDENT"       property="dateOfIncident" />
+        <result column="VICTIM_PERCENT"         property="victimPercent" />
+        <result column="NUMBER_OF_CASUALTIES"   property="numberOfCasualties" />
+        <result column="FIRE_LOCATION"          property="fireLocation" />
+        <result column="STATE_NAME"             property="stateName" />
+    </resultMap>
+
+    <select id="localCnt" resultMap="localMap">
+        SELECT SUM(OCCURRENCES) AS OCCURRENCES
+            , STATE_NAME
+        FROM python_02
+        WHERE SUBSTRING(DATE_OF_INCIDENT, 1, 4) = #{selectYear}
+        AND STATE_NAME = #{stateName}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

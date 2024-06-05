@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <th:block th:fragment="eunjiSideFragment">
+        <!-- html 코드 작성 -->
+        <div class="row" >
+            <div class="col" >
+                <div class="row mt-1">
+                    <div class="col">
+                        <span class="states-span-tag" style="font-size: 1.8rem; font-weight: bold;"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-3 d3_test" id="map" style="position: relative;">
+                        <div id="tooltip">
+                            <span id="tooltip-name"></span><br>
+                            <span id="tooltip-count"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+    
+</html>

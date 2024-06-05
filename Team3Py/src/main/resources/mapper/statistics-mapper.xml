@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="statisticsMapper">
+    <!--  3. 시도별 인명 피해  -->
+    <resultMap id="python3" type="com.green.pythonTeam3.sido.vo.Python3VO">
+        <id column="VCTM_CODE"              property="victimCode"/>
+        <result column="VCTM_MONTH"         property="victimMonth"/>
+        <result column="VCTM_SIDO"          property="victimSido"/>
+        <result column="VCTM_OCRN"          property="victimOcrn"/>
+        <result column="LIFE_DMG_PERCNT"    property="lifeDmgPercnt"/>
+        <result column="TOTAL_OCRN"         property="totalOcrn"/>
+        <result column="TOTAL_PRPT"         property="totalPrpt"/>
+    </resultMap>
+
+    <!-- 4. 시도별 재산 피해 -->
+    <resultMap id="python4" type="com.green.pythonTeam3.sido.vo.Python4VO">
+        <id column="PROPERTY_CODE"          property="propertyCode"/>
+        <result column="OCRN_MONTH"         property="ocrnMonth"/>
+        <result column="SIDO_NM"            property="sidoNm"/>
+        <result column="OCRN_MNB"           property="ocrnMnb"/>
+        <result column="PRPT_DMG_SBTT_AMT"  property="prptDmgSbttAmt"/>
+        <result column="LIFE_DMG_PERCNT"    property="lifeDmgPercnt"/>
+        <result column="TOTAL_OCRN"         property="totalOcrn"/>
+        <result column="TOTAL_PRPT"         property="totalPrpt"/>
+        <result column="TOTAL_LIFE"         property="totalLife"/>
+    </resultMap>
+
+    <!-- 10. 발화 장소 -->
+    <resultMap id="firstFirePlace" type="com.green.pythonTeam3.total.vo.FireStartPlaceVO">
+        <result column="PLACE_BIG_TYPE"            property="placeBigType"/>
+        <result column="PLACE_MIDEUM_TYPE"         property="placeMediumType"/>
+        <result column="HAPPEN_DATE"               property="happenDate"/>
+        <result column="HULT_PEOPLE"               property="hurtPeople"/>
+        <result column="HAPPEN_CNT"                property="happenCnt"/>
+        <result column="MONEY_DAMAGE"              property="moneyDamage"/>
+        <result column="COUNT"                     property="count"/>
+    </resultMap>
+
+    <!-- 8. 발화요인 -->
+    <resultMap id="fireFactor" type="com.green.pythonTeam3.ranking.vo.FireFactorVO">
+        <result column="PROPERTY_DAMAGE"        property="propertyDamage"/>
+        <result column="FIRE_FACTOR_BIG"        property="fireFactorBig"/>
+        <result column="OCCURRENCES"            property="occurrences"/>
+        <result column="INJURED_PEOPLE"         property="injuredPeople"/>
+        <result column="DATE_OF_INCIDENT"       property="dateOfIncident"/>
+        <result column="VICTIM_PERCENT"         property="victimPercent"/>
+        <result column="FIRE_FACTOR_SMALL"      property="fireFactorSmall"/>
+        <result column="COUNT"                  property="count"/>
+        <collection property="firstChelateVO"    resultMap="firstChelate" />
+    </resultMap>
+
+    <!-- 11. 최초 착화물별 -->
+    <resultMap id="firstChelate" type="com.green.pythonTeam3.total.vo.FirstChelateVO">
+        <result column="FIRSTBURN_BIG_TYPE"     property="chelateBigType"/>
+        <result column="FIRSTBURN_SMALL_TYPE"   property="chelateSmallType"/>
+        <result column="HAPPEN_DATE"            property="dateOfIncident"/>
+        <result column="HAPPEN_CNT"             property="occurrences"/>
+        <result column="HULT_PEOPLE"            property="injuredPeople"/>
+        <result column="MONEY_DAMAGE"           property="propertyDamage"/>
+        <result column="COUNT"                  property="count"/>
+    </resultMap>
+
+
+    <!-- 주요 화재 통계 -->
+    <!-- 1. 3개년 전체 발생건수 & 피해금액, 각 연도별 발생건수 & 피해금액 -->
+    <select id="totalOccAndProperty" resultMap="python4">
+        SELECT
+            SUM(OCRN_MNB) AS `totalOccurrences`
+            , SUM(CASE WHEN OCRN_MONTH LIKE '2021%' THEN OCRN_MNB ELSE 0 END) AS `occurrences2021`
+            , SUM(CASE WHEN OCRN_MONTH LIKE '2022%' THEN OCRN_MNB ELSE 0 END) AS `occurrences2022`
+            , SUM(CASE WHEN OCRN_MONTH LIKE '2023%' THEN OCRN_MNB ELSE 0 END) AS `occurrences2023`
+            , SUM(PRPT_DMG_SBTT_AMT) AS `totalPropertyDamage`
+            , SUM(CASE WHEN OCRN_MONTH LIKE '2021%' THEN PRPT_DMG_SBTT_AMT ELSE 0 END) AS `propertyDamage2021`
+            , SUM(CASE WHEN OCRN_MONTH LIKE '2022%' THEN PRPT_DMG_SBTT_AMT ELSE 0 END) AS `propertyDamage2022`
+            , SUM(CASE WHEN OCRN_MONTH LIKE '2023%' THEN PRPT_DMG_SBTT_AMT ELSE 0 END) AS `propertyDamage2023`
+        FROM PYTHON_4;
+    </select>
+
+    <!-- 2. 3개년 전체 인명피해 -->
+    <select id="totalLifeDmg" resultMap="python3">
+        SELECT
+            SUM(LIFE_DMG_PERCNT) AS `totalLifeDmgPercnt`
+            , SUM(CASE WHEN VCTM_MONTH LIKE '2021%' THEN LIFE_DMG_PERCNT ELSE 0 END) AS `LifeDmgPercnt2021`
+            , SUM(CASE WHEN VCTM_MONTH LIKE '2022%' THEN LIFE_DMG_PERCNT ELSE 0 END) AS `LifeDmgPercnt2022`
+            , SUM(CASE WHEN VCTM_MONTH LIKE '2023%' THEN LIFE_DMG_PERCNT ELSE 0 END) AS `LifeDmgPercnt2023`
+        FROM PYTHON_3;
+    </select>
+
+    <!-- 3. 지역별 화재피해 -->
+    <select id="totalLocalDmg" resultMap="python3">
+        SELECT VCTM_SIDO
+            , SUM(CASE WHEN VCTM_MONTH LIKE '2021%' THEN VCTM_OCRN ELSE 0 END) AS `occurrencesCount2021`
+            , SUM(CASE WHEN VCTM_MONTH LIKE '2022%' THEN VCTM_OCRN ELSE 0 END) AS `occurrencesCount2022`
+            , SUM(CASE WHEN VCTM_MONTH LIKE '2023%' THEN VCTM_OCRN ELSE 0 END) AS `occurrencesCount2023`
+            , SUM(VCTM_OCRN) AS 'totalOccurrencesCount'
+        FROM PYTHON_3
+        GROUP BY VCTM_SIDO
+        ORDER BY 'totalOccurrencesCount' DESC
+        LIMIT 1;
+    </select>
+
+
+    <!-- 주제별 화재 통계 -->
+    <!-- 1. 화재 장소 -->
+    <!-- 1-1. 3개년 데이터 + 토탈값 -->
+    <select id="totalFirePlace" resultMap="firstFirePlace">
+        SELECT 'TotalCount' AS PLACE_BIG_TYPE
+                , SUM(COUNT) AS COUNT
+        FROM
+            (SELECT COUNT(PLACE_BIG_TYPE) AS COUNT
+            FROM python_10
+            GROUP BY PLACE_BIG_TYPE) AS Subquery
+        UNION
+        SELECT PLACE_BIG_TYPE
+                , COUNT(PLACE_BIG_TYPE) AS COUNT
+        FROM python_10
+        GROUP BY PLACE_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+    <!-- 1-2. 2021~2023년 데이터 + 연도별 토탈값 -->
+    <select id="firePlace2021" resultMap="firstFirePlace">
+        SELECT 'TotalCount' AS PLACE_BIG_TYPE
+                , SUM(COUNT) AS COUNT
+        FROM
+            (SELECT COUNT(PLACE_BIG_TYPE) AS COUNT
+            FROM python_10
+            WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2021'
+        GROUP BY PLACE_BIG_TYPE) AS Subquery
+        UNION
+        SELECT PLACE_BIG_TYPE
+                , COUNT(PLACE_BIG_TYPE) AS COUNT
+        FROM python_10
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2021'
+        GROUP BY PLACE_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+    <select id="firePlace2022" resultMap="firstFirePlace">
+        SELECT 'TotalCount' AS PLACE_BIG_TYPE
+                , SUM(COUNT) AS COUNT
+        FROM
+            (SELECT COUNT(PLACE_BIG_TYPE) AS COUNT
+                FROM python_10
+                WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2022'
+        GROUP BY PLACE_BIG_TYPE) AS Subquery
+        UNION
+        SELECT PLACE_BIG_TYPE
+                , COUNT(PLACE_BIG_TYPE) AS COUNT
+        FROM python_10
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2022'
+        GROUP BY PLACE_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+    <select id="firePlace2023" resultMap="firstFirePlace">
+        SELECT 'TotalCount' AS PLACE_BIG_TYPE
+                , SUM(COUNT) AS COUNT
+        FROM (SELECT COUNT(PLACE_BIG_TYPE) AS COUNT
+                FROM python_10
+                WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2023'
+        GROUP BY PLACE_BIG_TYPE) AS Subquery
+        UNION
+        SELECT PLACE_BIG_TYPE
+                , COUNT(PLACE_BIG_TYPE) AS COUNT
+        FROM python_10
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2023'
+        GROUP BY PLACE_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+    <!-- 2. 화재 요인 -->
+    <!-- 2-1. 3개년 데이터 + 토탈값 -->
+    <select id="totalFireFactor" resultMap="fireFactor">
+        SELECT 'TotalCount' AS FIRE_FACTOR_BIG
+                , SUM(COUNT) AS COUNT
+        FROM
+            (SELECT COUNT(FIRE_FACTOR_BIG) AS COUNT
+            FROM python_8
+            GROUP BY FIRE_FACTOR_BIG) AS Subquery
+        UNION
+        SELECT FIRE_FACTOR_BIG
+                , COUNT(FIRE_FACTOR_BIG) AS COUNT
+        FROM python_8
+        GROUP BY FIRE_FACTOR_BIG
+        ORDER BY COUNT DESC;
+    </select>
+
+    <!-- 2-2. 2021~2023년 데이터 + 연도별 토탈값 -->
+    <select id="fireFactor2021" resultMap="fireFactor">
+        SELECT 'TotalCount' AS FIRE_FACTOR_BIG
+                , SUM(COUNT) AS COUNT
+        FROM
+            (SELECT COUNT(FIRE_FACTOR_BIG) AS COUNT
+            FROM python_8
+            WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = '2021'
+            GROUP BY FIRE_FACTOR_BIG) AS Subquery
+        UNION
+        SELECT FIRE_FACTOR_BIG
+                , COUNT(FIRE_FACTOR_BIG) AS COUNT
+        FROM python_8
+        WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = '2021'
+        GROUP BY FIRE_FACTOR_BIG
+        ORDER BY COUNT DESC;
+    </select>
+
+    <select id="fireFactor2022" resultMap="fireFactor">
+        SELECT 'TotalCount' AS FIRE_FACTOR_BIG
+        , SUM(COUNT) AS COUNT
+        FROM
+        (SELECT COUNT(FIRE_FACTOR_BIG) AS COUNT
+        FROM python_8
+        WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = '2022'
+        GROUP BY FIRE_FACTOR_BIG) AS Subquery
+        UNION
+        SELECT FIRE_FACTOR_BIG
+        , COUNT(FIRE_FACTOR_BIG) AS COUNT
+        FROM python_8
+        WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = '2022'
+        GROUP BY FIRE_FACTOR_BIG
+        ORDER BY COUNT DESC;
+    </select>
+
+    <select id="fireFactor2023" resultMap="fireFactor">
+        SELECT 'TotalCount' AS FIRE_FACTOR_BIG
+        , SUM(COUNT) AS COUNT
+        FROM
+        (SELECT COUNT(FIRE_FACTOR_BIG) AS COUNT
+        FROM python_8
+        WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = '2023'
+        GROUP BY FIRE_FACTOR_BIG) AS Subquery
+        UNION
+        SELECT FIRE_FACTOR_BIG
+        , COUNT(FIRE_FACTOR_BIG) AS COUNT
+        FROM python_8
+        WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = '2023'
+        GROUP BY FIRE_FACTOR_BIG
+        ORDER BY COUNT DESC;
+    </select>
+
+    <!-- 3. 최초 착화물 -->
+    <!-- 3-1. 3개년 데이터 + 토탈값 -->
+    <select id="totalFirstChelate" resultMap="firstChelate">
+        SELECT 'TotalCount' AS FIRSTBURN_BIG_TYPE
+        , SUM(COUNT) AS COUNT
+        FROM
+        (SELECT COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        GROUP BY FIRSTBURN_BIG_TYPE) AS Subquery
+        UNION
+        SELECT FIRSTBURN_BIG_TYPE
+        , COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        GROUP BY FIRSTBURN_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+    <!-- 3-2. 2021~2023년 데이터 + 연도별 토탈값 -->
+    <select id="firstChelate2021" resultMap="firstChelate">
+        SELECT
+            'TotalCount' AS FIRSTBURN_BIG_TYPE
+            , SUM(COUNT) AS COUNT
+        FROM
+            (SELECT COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+            FROM python_11
+            WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2021'
+            GROUP BY FIRSTBURN_BIG_TYPE) AS Subquery
+        UNION
+        SELECT FIRSTBURN_BIG_TYPE
+            , COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2021'
+        GROUP BY FIRSTBURN_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+    <select id="firstChelate2022" resultMap="firstChelate">
+        SELECT
+        'TotalCount' AS FIRSTBURN_BIG_TYPE
+        , SUM(COUNT) AS COUNT
+        FROM
+        (SELECT COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2022'
+        GROUP BY FIRSTBURN_BIG_TYPE) AS Subquery
+        UNION
+        SELECT FIRSTBURN_BIG_TYPE
+        , COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2022'
+        GROUP BY FIRSTBURN_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+    <select id="firstChelate2023" resultMap="firstChelate">
+        SELECT
+        'TotalCount' AS FIRSTBURN_BIG_TYPE
+        , SUM(COUNT) AS COUNT
+        FROM
+        (SELECT COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2023'
+        GROUP BY FIRSTBURN_BIG_TYPE) AS Subquery
+        UNION
+        SELECT FIRSTBURN_BIG_TYPE
+        , COUNT(FIRSTBURN_BIG_TYPE) AS COUNT
+        FROM python_11
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = '2023'
+        GROUP BY FIRSTBURN_BIG_TYPE
+        ORDER BY COUNT DESC;
+    </select>
+
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

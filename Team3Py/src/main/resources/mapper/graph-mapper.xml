@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 해당 파일에 모든 쿼리문을 작성 -->
+<mapper namespace="graphMapper">
+    <resultMap id="firePlace" type="com.green.pythonTeam3.ranking.vo.FirePlaceVO">
+        <result column="PROPERTY_DAMAGE" property="propertyDamage"/>
+        <result column="OCCURRENCES" property="occurrences"/>
+        <result column="INJURED_PEOPLE" property="injuredPeople"/>
+        <result column="DATE_OF_INCIDENT" property="dateOfIncident"/>
+        <result column="VICTIM_PERCENT" property="victimPercent"/>
+        <result column="NUMBER_OF_CASUALTIES" property="numberOfCasualties"/>
+        <result column="FIRE_LOCATION" property="fireLocation"/>
+        <result column="COUNT" property="count"/>
+    </resultMap>
+	<select id="totalCnt" resultType="int">
+        SELECT
+            SUM(vctm_ocrn)
+        FROM python_3
+        WHERE substring(VCTM_MONTH,1,4) = #{selectYear}
+        GROUP BY substring(VCTM_MONTH,5,2)
+        ORDER BY substring(VCTM_MONTH,5,2) ASC
+    </select>
+    <select id="monthStarPropertyDamage" resultType="int">
+        SELECT
+        SUM(PRPT_DMG_SBTT_AMT)
+        FROM python_4
+        WHERE substring(OCRN_MONTH,1,4) = #{selectYear}
+        GROUP BY substring(OCRN_MONTH,5,2)
+        ORDER BY substring(OCRN_MONTH,5,2) ASC
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

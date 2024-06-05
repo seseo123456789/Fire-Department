@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 화재장소 & 발화장소 -->
+
+<mapper namespace="placeMapper">
+    <!-- 7. 화재장소 -->
+    <resultMap id="firePlace" type="com.green.pythonTeam3.ranking.vo.FirePlaceVO">
+        <result column="PROPERTY_DAMAGE"            property="propertyDamage"/>
+        <result column="OCCURRENCES"                property="occurrences"/>
+        <result column="INJURED_PEOPLE"             property="injuredPeople"/>
+        <result column="DATE_OF_INCIDENT"           property="dateOfIncident"/>
+        <result column="VICTIM_PERCENT"             property="victimPercent"/>
+        <result column="NUMBER_OF_CASUALTIES"       property="numberOfCasualties"/>
+        <result column="FIRE_LOCATION"              property="fireLocation"/>
+        <result column="COUNT"                      property="count"/>
+        <result column="AVG_OCCURRENCES"            property="avgOccurrences" />
+        <collection property="fireStartPlaceVO"     resultMap="firstFirePlace" />
+    </resultMap>
+
+    <!-- 10. 발화장소 -->
+    <resultMap id="firstFirePlace" type="com.green.pythonTeam3.total.vo.FireStartPlaceVO">
+        <result column="PLACE_BIG_TYPE"            property="placeBigType"/>
+        <result column="PLACE_MIDEUM_TYPE"         property="placeMediumType"/>
+        <result column="HAPPEN_DATE"               property="happenDate"/>
+        <result column="HULT_PEOPLE"               property="hurtPeople"/>
+        <result column="HAPPEN_CNT"                property="happenCnt"/>
+        <result column="MONEY_DAMAGE"              property="moneyDamage"/>
+        <result column="COUNT"                     property="count"/>
+    </resultMap>
+
+    <!-- 메인화면 top3 조회 -->
+        <!-- 1. 발화장소 - 대분류명 -->
+    <select id="mainPlaceTop1" resultMap="firstFirePlace">
+        SELECT PLACE_BIG_TYPE
+        , COUNT(PLACE_BIG_TYPE) AS COUNT
+        FROM python_10
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = #{selectYear}
+        GROUP BY PLACE_BIG_TYPE
+        ORDER BY COUNT(PLACE_BIG_TYPE) DESC
+        LIMIT 3;
+    </select>
+
+        <!-- 2. 발화장소 - 중분류명 -->
+    <select id="mainPlaceTop2" resultMap="firstFirePlace">
+        SELECT PLACE_MIDEUM_TYPE
+        , COUNT(PLACE_MIDEUM_TYPE) AS count
+        FROM python_10
+        WHERE DATE_FORMAT(HAPPEN_DATE,'%Y') = #{selectYear}
+        GROUP BY PLACE_MIDEUM_TYPE
+        ORDER BY COUNT(PLACE_MIDEUM_TYPE) DESC
+        LIMIT 3;
+    </select>
+
+        <!-- 3. 화재장소 -->
+    <select id="mainPlaceTop3" resultMap="firePlace">
+        SELECT FIRE_LOCATION
+        , COUNT(FIRE_LOCATION) AS count
+        FROM python_7
+        WHERE DATE_FORMAT(DATE_OF_INCIDENT,'%Y') = #{selectYear}
+        GROUP BY FIRE_LOCATION
+        ORDER BY COUNT(FIRE_LOCATION) DESC
+        LIMIT 3;
+    </select>
+
+
+    <!-- 메인화면 top3 증감값 조회 -->
+        <!-- 1. 발화장소 - 대분류명  -->
+    <select id="mainPlaceUD1" resultType="int">
+        SELECT
+            subquery.`selectCount` - subquery.`lastYearCount` AS 'upDown'
+        FROM (
+            SELECT
+            PLACE_BIG_TYPE,
+            SUM(CASE WHEN DATE_FORMAT(HAPPEN_DATE, '%Y') = #{selectYear} THEN 1 ELSE 0 END) AS 'selectCount',
+            SUM(CASE WHEN DATE_FORMAT(HAPPEN_DATE, '%Y') = (#{selectYear} - 1) THEN 1 ELSE 0 END) AS 'lastYearCount'
+            FROM python_10
+            GROUP BY PLACE_BIG_TYPE
+            ORDER BY `selectCount` DESC
+            LIMIT 3
+        ) AS subquery
+    </select>
+
+        <!-- 2. 발화장소 - 중분류명  -->
+    <select id="mainPlaceUD2" resultType="int">
+        SELECT
+            subquery.`selectCount` - subquery.`lastYearCount` AS 'upDown'
+        FROM (
+            SELECT
+            PLACE_MIDEUM_TYPE,
+            SUM(CASE WHEN DATE_FORMAT(HAPPEN_DATE, '%Y') = #{selectYear} THEN 1 ELSE 0 END) AS 'selectCount',
+            SUM(CASE WHEN DATE_FORMAT(HAPPEN_DATE, '%Y') = (#{selectYear} - 1) THEN 1 ELSE 0 END) AS 'lastYearCount'
+            FROM python_10
+            GROUP BY PLACE_MIDEUM_TYPE
+            ORDER BY `selectCount` DESC
+            LIMIT 3
+        ) AS subquery
+    </select>
+
+        <!-- 3. 발화장소 - 대분류명 -->
+    <select id="mainPlaceUD3" resultType="int">
+        SELECT
+            subquery.`selectCount` - subquery.`lastYearCount` AS 'upDown'
+        FROM (
+            SELECT
+            FIRE_LOCATION,
+            SUM(CASE WHEN DATE_FORMAT(DATE_OF_INCIDENT, '%Y') = #{selectYear} THEN 1 ELSE 0 END) AS 'selectCount',
+            SUM(CASE WHEN DATE_FORMAT(DATE_OF_INCIDENT, '%Y') = (#{selectYear} - 1) THEN 1 ELSE 0 END) AS 'lastYearCount'
+            FROM python_7
+            GROUP BY FIRE_LOCATION
+            ORDER BY `selectCount` DESC
+            LIMIT 3
+        ) AS subquery
+    </select>
+
+    <!-- 화재장소 평균 -->
+    <select id="avgFirePlace" resultMap="firePlace">
+        SELECT FIRE_LOCATION
+            , SUM(OCCURRENCES) / 1095 AS AVG_OCCURRENCES
+            , MONTH(NOW()) AS DATE_OF_INCIDENT
+        FROM python_7
+        WHERE YEAR(DATE_OF_INCIDENT) IN (2021, 2022, 2023) AND MONTH(DATE_OF_INCIDENT) = 1
+        GROUP BY FIRE_LOCATION
+        ORDER BY AVG_OCCURRENCES DESC
+        LIMIT 1
+    </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

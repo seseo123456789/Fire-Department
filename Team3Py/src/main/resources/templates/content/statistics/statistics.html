@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{fragment/result_layout}">
+
+<th:block layout:fragment="content_css">
+    <!-- html 파일이 열릴 때 같이 실행되는 css -->
+    <!-- <link rel="stylesheet" href="/"> -->
+</th:block>
+
+
+<th:block layout:fragment="contentFragment">
+    <style>
+        .btn-outline-danger.btn-clicked,
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .text-over-cut {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0;
+        }
+    </style>
+
+    <!-- html 코드 작성 -->
+    <div style="margin-left: 150px; margin-right: 150px; margin-top: 60px; height: 2000px;">
+        <div class="row">
+            <div class="col">
+                <!-- 주요 화재통계 -->
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="d-flex" style="padding-top: 3px; padding-bottom: 10px;">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor"
+                                    class="bi bi-clipboard text-secondary" viewBox="0 0 16 16">
+                                    <path
+                                        d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                                    <path
+                                        d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                                </svg>
+                            </div>
+                            <div class="text-secondary" style="font-size: 16px; margin-left: 10px;">홈 > 화재통계</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4 border-bottom border-black border-2" style="padding-bottom: 5px;">
+                    <div class="col">
+                        <h3 style="font-weight: bold;">주요 화재통계</h3>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col">
+                        <div class="row text-center">
+                            <div class="col ms-1 me-1 border border-secondary-subtle border-3"
+                                style="padding-top: 45px; padding-bottom: 45px;">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
+                                        fill="currentColor" class="bi bi-fire text-danger mb-2" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15" />
+                                    </svg>
+                                </div>
+                                <div class="col" style="font-size: 22px; font-weight: bold;">화재 발생건수</div>
+                                <div class="col mb-4" style="font-size: 18px; font-weight: bold;">
+                                    <span class="badge bg-danger-subtle rounded-0 " style="color: black;">평균</span>
+                                    <span>[[${totalOccAndProperty3[3]}]]건</span>
+                                </div>
+                                <div class="col">
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2021년</span>
+                                    <span style="font-size: 0.9rem;">[[${totalOccAndProperty3[0]}]]건</span>
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2022년</span>
+                                    <span style="font-size: 0.9rem;">[[${totalOccAndProperty3[1]}]]건</span>
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2023년</span>
+                                    <span style="font-size: 0.9rem;">[[${totalOccAndProperty3[2]}]]건</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row text-center">
+                            <div class="col ms-1 me-1 border border-secondary-subtle border-3"
+                                style="padding-top: 45px; padding-bottom: 45px;">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
+                                        fill="currentColor" class="bi bi-person-fill text-danger mb-2"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                                    </svg>
+                                </div>
+                                <div class="col" style="font-size: 22px; font-weight: bold;">화재 인명피해</div>
+                                <div class="col mb-4" style="font-size: 18px; font-weight: bold;">
+                                    <span class="badge bg-danger-subtle rounded-0 " style="color: black;">평균</span>
+                                    [[${totalLifeDmg2[3]}]]명
+                                </div>
+                                <div class="col">
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2021년</span>
+                                    <span style="font-size: 0.9rem;">[[${totalLifeDmg2[0]}]]명</span>
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2022년</span>
+                                    <span style="font-size: 0.9rem;">[[${totalLifeDmg2[1]}]]명</span>
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2023년</span>
+                                    <span style="font-size: 0.9rem;">[[${totalLifeDmg2[2]}]]명</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row text-center">
+                            <div class="col ms-1 me-1 border border-secondary-subtle border-3"
+                                style="padding-top: 45px; padding-bottom: 45px;">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
+                                        fill="currentColor" class="bi bi-coin text-danger mb-2" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518z" />
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path
+                                            d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11m0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12" />
+                                    </svg>
+                                </div>
+                                <div class="col" style="font-size: 22px; font-weight: bold;">화재 재산피해</div>
+                                <div class="col mb-4" style="font-size: 18px; font-weight: bold;">
+                                    <span class="badge bg-danger-subtle rounded-0 " style="color: black;">평균</span>
+                                    [[${totalOccAndProperty2[3]}]]
+                                    <span class="text-secondary" style="font-size: 12px;"> [단위 : 억 원]</span>
+                                </div>
+                                <div class="col">
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2021년</span>
+                                    <span style="font-size: 0.9rem">[[${totalOccAndProperty2[0]}]]</span>
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2022년</span>
+                                    <span style="font-size: 0.9rem">[[${totalOccAndProperty2[1]}]]</span>
+                                    <span class="badge text-bg-secondary rounded-0 "
+                                        style="font-size: 12px;">2023년</span>
+                                    <span style="font-size: 0.9rem">[[${totalOccAndProperty2[2]}]]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col mb-3">
+                        <div class="row text-center">
+                            <div class="col ms-1 me-1 border border-secondary-subtle border-3"
+                                style="padding-top: 45px; padding-bottom: 45px;">
+                                <div class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
+                                        fill="currentColor" class="bi bi-pin-map-fill text-danger mb-2"
+                                        viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M3.1 11.2a.5.5 0 0 1 .4-.2H6a.5.5 0 0 1 0 1H3.75L1.5 15h13l-2.25-3H10a.5.5 0 0 1 0-1h2.5a.5.5 0 0 1 .4.2l3 4a.5.5 0 0 1-.4.8H.5a.5.5 0 0 1-.4-.8z" />
+                                        <path fill-rule="evenodd"
+                                            d="M4 4a4 4 0 1 1 4.5 3.969V13.5a.5.5 0 0 1-1 0V7.97A4 4 0 0 1 4 3.999z" />
+                                    </svg>
+                                </div>
+                                <div class="col" style="font-size: 22px; font-weight: bold;">지역별 화재피해</div>
+                                <div>
+                                    <div class="col mb-4" style="font-size: 18px; font-weight: bold;">
+                                        <span class="badge bg-danger-subtle rounded-0 " style="color: black;">지역</span>
+                                        <span class="me-2">[[${totalLocalDmg[0].victimSido}]]</span>
+                                        <span class="badge bg-danger-subtle rounded-0 " style="color: black;">평균</span>
+                                        <span>[[${totalLocalDmg2[3]}]]건</span>
+                                    </div>
+                                    <div class="col">
+                                        <span class="badge text-bg-secondary rounded-0 "
+                                            style="font-size: 12px;">2021년</span>
+                                        <span style="font-size: 0.9rem">[[${totalLocalDmg2[0]}]]건</span>
+                                        <span class="badge text-bg-secondary rounded-0 "
+                                            style="font-size: 12px;">2022년</span>
+                                        <span style="font-size: 0.9rem">[[${totalLocalDmg2[1]}]]건</span>
+                                        <span class="badge text-bg-secondary rounded-0 "
+                                            style="font-size: 12px;">2023년</span>
+                                        <span style="font-size: 0.9rem">[[${totalLocalDmg2[2]}]]건</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 주제별 화재통계 -->
+                <div class="row mb-4 border-bottom border-black border-2" style="padding-bottom: 5px;">
+                    <div class="col">
+                        <h3 style="font-weight: bold;">주제별 화재통계</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 text-center d-grid">
+                        <input type="button" class="btn btn-lg btn-outline-danger rounded-0" value="화재장소"
+                            onclick="showContent('fireLocation', this)">
+                    </div>
+                    <div class="col-4 text-center d-grid">
+                        <input type="button" class="btn btn-lg btn-outline-danger rounded-0" value="화재요인"
+                            onclick="showContent('fireCause', this)">
+                    </div>
+                    <div class="col-4 text-center d-grid">
+                        <input type="button" class="btn btn-lg btn-outline-danger rounded-0" value="최초착화물"
+                            onclick="showContent('ignitionMaterial', this)">
+                    </div>
+                </div>
+
+                <!-- 1. 화재장소 -->
+                <div id="fireLocation" class="content" style="display: none;">
+                    <div class="row mt-5 mb-3">
+                        <div class="col text-center">
+                            <span class="badge text-bg-secondary rounded-0 me-2"
+                                style="font-size: 23px;">2021-2023</span>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col text-center">
+                            <span id="fireLocationTitle" class="text-secondary"
+                                style="font-size: 23px; font-weight: bold;">발화장소 통계 </span>
+                        </div>
+                    </div>
+                    <!-- 3개년 전체 화재장소 막대그래프 -->
+                    <div class="row text-center mb-5">
+                        <div class="col canvas-container">
+                            <canvas id="bar-chart" width="1500" height="500"></canvas>
+                        </div>
+                    </div>
+                    <!-- 2021-2023 화재장소 원그래프 -->
+                    <div class="row">
+                        <div class="col text-center">
+                            <div class="mb-2">
+                                <span class="badge text-bg-secondary rounded-0 me-2"
+                                    style="font-size: 20px;">2021</span>
+                            </div>
+                            <div class="canvas-container">
+                                <canvas id="pie-chart-1" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                        <div class="col text-center">
+                            <div class="mb-2">
+                                <span class="badge text-bg-secondary rounded-0 me-2"
+                                    style="font-size: 20px;">2022</span>
+                            </div>
+                            <div class="canvas-container">
+                                <canvas id="pie-chart-2" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                        <div class="col text-center">
+                            <div class="mb-2">
+                                <span class="badge text-bg-secondary rounded-0 me-2"
+                                    style="font-size: 20px;">2023</span>
+                            </div>
+                            <div class="canvas-container">
+                                <canvas id="pie-chart-3" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 2. 화재요인 -->
+                <div id="fireCause" class="content" style="display: none;">
+                    <div class="row mt-5 mb-3">
+                        <div class="col text-center">
+                            <span class="badge text-bg-secondary rounded-0 me-2"
+                                style="font-size: 23px;">2021-2023</span>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col text-center">
+                            <span id="fireCauseTitle" class="text-secondary"
+                                style="font-size: 23px; font-weight: bold;">발화요인 통계 </span>
+                        </div>
+                    </div>
+                    <!-- 3개년 전체 화재요인 막대그래프 -->
+                    <div class="row text-center mb-5">
+                        <div class="col canvas-container">
+                            <canvas id="bar-chart-2" width="1200" height="450"></canvas>
+                        </div>
+                    </div>
+                    <!-- 2021-2023 화재요인 원그래프 -->
+                    <div class="row">
+                        <div class="col text-center">
+                            <div class="mb-2 mt-5">
+                                <span class="badge text-bg-secondary rounded-0 me-2"
+                                    style="font-size: 20px;">2021</span>
+                            </div>
+                            <div class="canvas-container">
+                                <canvas id="pie-chart-2-1" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                        <div class="col text-center">
+                            <div class="mb-2 mt-5">
+                                <span class="badge text-bg-secondary rounded-0 me-2"
+                                    style="font-size: 20px;">2022</span>
+                            </div>
+                            <div class="canvas-container">
+                                <canvas id="pie-chart-2-2" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                        <div class="col text-center">
+                            <div class="mb-2 mt-5">
+                                <span class="badge text-bg-secondary rounded-0 me-2"
+                                    style="font-size: 20px;">2023</span>
+                            </div>
+                            <div class="canvas-container">
+                                <canvas id="pie-chart-2-3" width="500" height="500"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 3. 최초착화물 -->
+                <div id="ignitionMaterial" class="content" style="display: none;">
+                    <div class="row mt-5 mb-3 text-center">
+                        <div class="col text-center">
+                            <span class="badge text-bg-secondary rounded-0 me-2"
+                                style="font-size: 23px;">2021-2023</span>
+                        </div>
+                    </div>
+                    <div class="row mb-5 text-center">
+                        <div class="col-3"></div>
+                        <div class="col-6 text-center">
+                            <span id="fireChelateTitle" class="text-secondary"
+                                style="font-size: 23px; font-weight: bold;">최초착화물 통계 </span>
+                        </div>
+                        <div class="col-3">
+                            <div class="row text-center">
+                                <div class="col ms-1 me-1"
+                                    style="padding-top: 10px; padding-bottom: 10px; background-color: lemonchiffon;">
+                                    <div class="text-secondary-emphasis text-start">
+                                        <div class="d-flex">
+                                            <div class="me-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
+                                                    fill="currentColor" class="bi bi-question-circle-fill"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247m2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z" />
+                                                </svg>
+                                            </div>
+                                            <div style="font-size: 17px; font-weight: bold;">최초착화물이란?</div>
+                                        </div>
+                                        <div>
+                                            <span class="me-4"> </span>
+                                            <span style="font-size: 13px;">발화열원에 의해 불이 붙은 최초의 가연물</span>
+                                        </div>
+                                        <div class="text-secondary-emphasis text-end" style="font-size: 10px;">
+                                            화재조사 및 보고규정 [소방청훈령 제311호, 2023. 3. 8, 전부개정]
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 3개년 전체 화재요인 막대그래프 -->
+                        <div class="row text-center mt-3 mb-5">
+                            <div class="col canvas-container">
+                                <canvas id="bar-chart-3" width="1200" height="450"></canvas>
+                            </div>
+                        </div>
+                        <!-- 2021-2023 화재요인 원그래프 -->
+                        <div class="row">
+                            <div class="col text-center">
+                                <div class="mb-2 mt-5">
+                                    <span class="badge text-bg-secondary rounded-0 me-2"
+                                        style="font-size: 20px;">2021</span>
+                                </div>
+                                <div class="canvas-container">
+                                    <canvas id="pie-chart-3-1" width="500" height="500"></canvas>
+                                </div>
+                            </div>
+                            <div class="col text-center">
+                                <div class="mb-2 mt-5">
+                                    <span class="badge text-bg-secondary rounded-0 me-2"
+                                        style="font-size: 20px;">2022</span>
+                                </div>
+                                <div class="canvas-container">
+                                    <canvas id="pie-chart-3-2" width="500" height="500"></canvas>
+                                </div>
+                            </div>
+                            <div class="col text-center">
+                                <div class="mb-2 mt-5">
+                                    <span class="badge text-bg-secondary rounded-0 me-2"
+                                        style="font-size: 20px;">2023</span>
+                                </div>
+                                <div class="canvas-container">
+                                    <canvas id="pie-chart-3-3" width="500" height="500"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</th:block>
+
+
+<th:block layout:fragment="content_jsp">
+    <!-- Chart.js 라이브러리 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="/js/statistics/statistics.js"></script>
+</th:block>
+
+
+</html>
