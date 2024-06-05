@@ -1,38 +1,35 @@
-학원관리 시스템
+국가 화재정보 모니터링 시스템
 ===
-Spring Team Project 
+Python을 사용하여 소방청 공공 데이터분석 및 가공 하고
+Chart.js를 활용하여 그래프 표현함.
 
-🖥️프로젝트 소개
+🖥️프로젝트 목표
 ===
-- 직관적인 UI 디자인으로 조작이 간단하고 행정·원생 관리를 통합한 프로젝트임
-- 운영관리, 학습관리, 회원관리 및 기타기능으로 분류하여 통합된 시스템으로 학원을 관리하고자 함
+- 화재안전제도 개선을 위하여 행정 시책의 근거자료로 활용 할 수 있다. 
+- 화재 안전한 공간을 위하여 화재 취약시설 안전관리 강화를 할 수 있다.
+- 인명피해, 손해상황을 파악하여 안전대책 자료로 활용 할 수 있다.
 
 ⏲️개발 기간
 ===
-2024-02-23 ~ 2024-04-30
+2024-03-13 ~ 2024-05-14 (3개월)
 
 🧰개발 환경
 ===
 <div align=center>
-  <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white">
-  <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+  <img src="https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/>
   <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-  <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white">
   <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white">
-  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
   <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white">
-  <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
-  <img src="https://img.shields.io/badge/tippy.js-FF6666?style=for-the-badge&logo=''&logoColor=white">
 </div>
 
 👨‍👩‍👧‍👧팀 구성
 ===
-|서지우|이송민|👑정민재|홍은지|
+|서지우|이⚪민|정⚪재|홍⚪지|
 |:---:|:---:|:---:|:---:|
-|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|
+<!-- |<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>| --> 
 
 
 🧮 구현 기능
