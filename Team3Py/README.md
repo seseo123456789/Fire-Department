@@ -3,17 +3,17 @@
 Python을 사용하여 2021~2023 3개년 소방청 공공 데이터분석 및 가공 하고
 Chart.js를 활용하여 그래프 표현함.
 
-🖥️프로젝트 목표
+## 🖥️프로젝트 목표
 ===
 - 화재안전제도 개선을 위하여 행정 시책의 근거자료로 활용 할 수 있다. 
 - 화재 안전한 공간을 위하여 화재 취약시설 안전관리 강화를 할 수 있다.
 - 인명피해, 손해상황을 파악하여 안전대책 자료로 활용 할 수 있다.
 
-⏲️개발 기간
+## ⏲️개발 기간
 ===
 2024-03-13 ~ 2024-05-14 (3개월)
 
-🧰개발 환경
+## 🧰개발 환경
 ===
 <div align=center>
   <img src="https://img.shields.io/badge/-Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/>
@@ -25,14 +25,14 @@ Chart.js를 활용하여 그래프 표현함.
   <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white">
 </div>
 
-👨‍👩‍👧‍👧팀 구성
+## 👨‍👩‍👧‍👧팀 구성
 ===
 |서지우|이⚪민|정⚪재|홍⚪지|
 |:---:|:---:|:---:|:---:|
 <!-- |<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>|<a href="https://github.com/JENGMINJAE"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"></a>| --> 
 
 
-🧮 구현 기능
+## 🧮 구현 기능
 ===
 + 메인화면
   1. 2021년 / 2022년 / 2023년 각 연간 화재발생 통계
